@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tetris</title>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <style>
+      #game {
+        width: 300px;
+        height: 600px;
+        margin: 0 auto;
+        font-size: 16px;
+      }
+      #info {
+        height: 196px;
+      }
+      .space {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #333;
+        float: left;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div id="info" class="text-center">
+        <h1>
+          Tetris
+        </h1>
+        <div class="row">
+          <div class="col-xs-3 col-xs-offset-3">
+            <p id="score"></p>
+            <p id="level"></p>
+          </div>
+          <div class="col-xs-3">
+            <div id="next-block"></div>
+          </div>
+        </div>
+      </div>
+      <div id="game"></div>
+    </main>
+
+    <script src="/assets/js/tetris/block.js"></script>
+    <script src="/assets/js/tetris/i.js"></script>
+    <script src="/assets/js/tetris/j.js"></script>
+    <script src="/assets/js/tetris/l.js"></script>
+    <script src="/assets/js/tetris/o.js"></script>
+    <script src="/assets/js/tetris/s.js"></script>
+    <script src="/assets/js/tetris/t.js"></script>
+    <script src="/assets/js/tetris/z.js"></script>
+    <script src="/assets/js/tetris/grid.js"></script>
+    <script src="/assets/js/tetris/tick.js"></script>
+    <script src="/assets/js/tetris/game.js"></script>
+    <script>
+      var game = new Game({
+        element: '#game',
+        score: '#score',
+        level: '#level',
+        nextBlock: '#next-block'
+      });
+    </script>
+  </body>
+</html>
+
