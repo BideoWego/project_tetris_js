@@ -6,6 +6,7 @@ var Game = (function(Tick, Grid, Block, I, J, L, O, S, T, Z, $) {
     this.$element = $(options['element']);
     this.$score = $(options['score']);
     this.$level = $(options['level']);
+    this.$lines = $(options['lines']);
     this.$nextBlock = $(options['nextBlock']);
     this.initialize();
   };
@@ -18,6 +19,7 @@ var Game = (function(Tick, Grid, Block, I, J, L, O, S, T, Z, $) {
   Game.prototype.initialize = function() {
     this.level = 1;
     this.points = 0;
+    this.lines = 0;
     this.grid = new Grid();
     this.linesLeft = Game.LINES_PER_LEVEL;
     this.nextBlock = this.randomBlock();
@@ -25,6 +27,7 @@ var Game = (function(Tick, Grid, Block, I, J, L, O, S, T, Z, $) {
     this.$element.append(this.grid.$element);
     this.$score.text('Score: ' + this.points);
     this.$level.text('Level: ' + this.level);
+    this.$lines.text('Lines: ' + this.lines);
     this.$nextBlock.addClass('clearfix');
     this.lastDelta = null;
     this.spawnBlock();
@@ -67,7 +70,6 @@ var Game = (function(Tick, Grid, Block, I, J, L, O, S, T, Z, $) {
     } else {
       this.block.stop();
       var numLines = this.grid.clearLines();
-      this.linesLeft -= numLines;
       this.levelUp(numLines);
       this.score(numLines);
       this.spawnBlock();
@@ -75,8 +77,9 @@ var Game = (function(Tick, Grid, Block, I, J, L, O, S, T, Z, $) {
   };
 
   Game.prototype.levelUp = function(numLines) {
-    if (this.linesLeft < 0) {
-      this.linesLeft = Game.LINES_PER_LEVEL - numLines;
+    this.linesLeft -= numLines;
+    if (this.linesLeft <= 0) {
+      this.linesLeft = Game.LINES_PER_LEVEL + this.linesLeft;
       this.level++;
       $(this.$level).text('Level: ' + this.level);
       this.speed -= Game.LEVEL_UP_SPEED;
@@ -88,6 +91,9 @@ var Game = (function(Tick, Grid, Block, I, J, L, O, S, T, Z, $) {
     var value = blockValue + Math.floor(numLines * (Grid.WIDTH * Grid.HEIGHT)) * this.level;
     this.points += (numLines === 4) ? value * 2 : value;
     this.$score.text('Score: ' + this.points);
+
+    this.lines += numLines;
+    this.$lines.text('Lines: ' + this.lines);
   };
 
   Game.prototype.keyMove = function(e) {
