@@ -2,6 +2,5 @@
 
 ## Bideo Wego
 
-Play the game on RawGit [here](https://rawgit.com/BideoWego/project_tetris_js/master/rawgit.html)
+Play the game on Surge.sh [here](http://bideowego-tetris.surge.sh)
 
-block based gaming
