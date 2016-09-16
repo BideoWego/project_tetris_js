@@ -141,64 +141,102 @@ var Game = (function(Tick, Grid, Block, I, J, L, O, S, T, Z, $) {
   };
 
   Game.prototype.canMoveTo = function(x, y, ignoreCollision) {
+    // If true, the collision will be ignored
+    // and the block will not be stopped
     ignoreCollision = (ignoreCollision === undefined) ? false : ignoreCollision;
 
+    // Cache the blocks last
+    // position in case
+    // there is a collision
     var lastPosition = {
       x: this.block.x,
       y: this.block.y
-    }
+    };
 
+    // Move the block in the
+    // desired direction
     this.block.x += x;
     this.block.y += y;
 
+    // Get the y difference to know if
+    // we're moving downward
     var differenceY = this.block.y - lastPosition.y;
 
+    // Set flags for if we
+    // can move and
+    // if we have to stop the block
     var canMove = true;
     var mustStop = false;
 
+    // For each x,y value in the block's 2D array
     for (var y = 0; y < this.block.value.length; y++) {
       for (var x = 0; x < this.block.value[y].length; x++) {
+
+        // Get the x,y value
         var blockPiece = this.block.value[y][x];
+
+        // If it is occupied
         if (blockPiece > 0) {
+
+          // If trying to move outside x
+          // bounds it cannot move
           if (this.block.x + x < 0 ||
               this.block.x + x >= Grid.WIDTH) {
             canMove = false;
           }
 
+          // If trying to move past the bottom of the grid
+          // it has hit the floor and must stop
           if (this.block.y + y >= Grid.HEIGHT) {
             mustStop = true;
             canMove = false;
           }
           
+          // Get the row we're at
           var row = this.grid.spaces[this.block.y + y];
           var space;
           if (row) {
+            // If we have a row
+            // get the space we're at
             space = row[this.block.x + x];
           }
+          // If we have both and they are
+          // above 0 we've hit a placed block
+          // stop the block
           if (space && space > 0) {
             mustStop = true;
             canMove = false;
           }
 
+          // If we can't move no need to iterate further
           if (!canMove) {
             break;
           }
         }
       }
+      // If we can't move no need to iterate further
       if (!canMove) {
         break;
       }
     }
 
+    // Move the block back to the original position
     this.block.x = lastPosition.x;
     this.block.y = lastPosition.y;
 
+    // If we're not ignorigin collsion for a rotation
+    // and we're moving down
+    // and we have to stop
     if (!ignoreCollision &&
         mustStop &&
         differenceY > 0) {
+
+      // Stop the block!
       this.stopBlock();
     }
 
+    // Return a boolean
+    // as this is a boolean function
     return canMove;
   };
 
